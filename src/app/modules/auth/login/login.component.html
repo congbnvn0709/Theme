@@ -1,0 +1,161 @@
+<div
+  class="row justify-content-center align-items-center login-wrap"
+  style="margin: 0; padding: 0"
+>
+  <div class="primary-circle">
+    <img src="./assets/media/authentication/inside.svg" alt="" />
+  </div>
+  <div class="login-form">
+    <div class="white-circle"></div>
+    <div class="login-form__aside">
+      <div class="logo">
+        <img src="./assets/media/logos/logo-light.png" alt="" />
+        <h4>Chào mừng bạn tới Bank-Gateway</h4>
+      </div>
+      <img
+        class="top-icon"
+        src="./assets/media/authentication/top-aside.svg"
+        alt=""
+      />
+      <img
+        class="bottom-icon"
+        src="./assets/media/authentication/aside.svg"
+        alt=""
+      />
+
+<!--      <div class="register">-->
+<!--        <a href="#" class="btn btn-link text-white">-->
+<!--          {{'AUTH.LOGIN.HAVE_NOT_ACCOUNT' | translate}}-->
+<!--        </a>-->
+<!--        <button class="btn btn-white btn-outline-white" (click)="register()">-->
+<!--          {{'AUTH.REGISTER.TITLE' | translate}}-->
+<!--        </button>-->
+<!--      </div>-->
+    </div>
+    <div class="login-form__content">
+      <h3>{{'AUTH.LOGIN.TITLE' | translate}}</h3>
+      <form [formGroup]="loginFormGroup" (ngSubmit)="submit()">
+        <!--        <ng-container *ngIf="authService.errorMessage.getValue()">-->
+        <!--          <div-->
+        <!--            class="-->
+        <!--              mb-10-->
+        <!--              alert alert-custom alert-light-danger alert-dismissible-->
+        <!--            "-->
+        <!--          >-->
+        <!--            <div class="alert-text">-->
+        <!--              {{authService.errorMessage.getValue()}}-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </ng-container>-->
+        <mat-form-field class="mb-4" [style.fontSize.px]="16">
+          <input
+            formControlName="username"
+            name="username"
+            autocomplete="off"
+            matInput
+            type="text"
+            [placeholder]="'AUTH.LOGIN.USERNAME' | translate"
+            [(ngModel)]="credentials.username"
+          />
+          <button
+            type="button"
+            mat-button
+            *ngIf="!!credentials.username"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="credentials.username = ''"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="loginFormGroup.controls['username'].invalid">
+            {{getError('username')}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="mb-4" [style.fontSize.px]="16">
+          <input
+            formControlName="password"
+            name="password"
+            autocomplete="off"
+            matInput
+            [type]="showPassword ? 'text': 'password'"
+            [placeholder]="'AUTH.LOGIN.PASSWORD' | translate"
+            [(ngModel)]="credentials.password"
+          />
+          <button
+            type="button"
+            mat-button
+            *ngIf="credentials.password"
+            matSuffix
+            mat-icon-button
+            (click)="showPassword = !showPassword"
+            aria-label="Show Password"
+          >
+            <mat-icon>
+              {{showPassword? 'visibility_off': 'visibility'}}
+            </mat-icon>
+          </button>
+          <mat-error *ngIf="loginFormGroup.controls['password'].invalid">
+            {{getError('password')}}
+          </mat-error>
+        </mat-form-field>
+        <div class="form-group">
+          <!--          <label style="color: rgba(0, 0, 0, 0.54)">-->
+          <!--            {{'AUTH.LOGIN.OTP' | translate}}-->
+          <!--          </label>-->
+          <!--          <div class="opt-confirmation">-->
+          <!--            <input type="text" class="form-control form-control-solid" />-->
+          <!--            <img-->
+          <!--              class="otp-img"-->
+          <!--              src="./assets/media/authentication/otp.png"-->
+          <!--              alt=""-->
+          <!--            />-->
+          <!--            <img-->
+          <!--              class="refresh-otp-btn"-->
+          <!--              src="./assets/media/authentication/refresh-otp.svg"-->
+          <!--              alt=""-->
+          <!--            />-->
+          <!--          </div>-->
+          <ngx-recaptcha2 #captchaElem
+            [siteKey]="siteKey"
+            (reset)="handleReset()"
+            (expire)="handleExpire()"
+            (load)="handleLoad()"
+            (success)="handleSuccess($event)"
+            [useGlobalDomain]="false"
+            [size]="size"
+            [hl]="lang"
+            [theme]="theme"
+            [type]="type"
+            formControlName="recaptcha">
+          </ngx-recaptcha2>
+        </div>
+
+        <button
+          class="btn btn-block btn-submit btn-lg submit-btn"
+          type="submit"
+        >
+          {{'AUTH.LOGIN.BUTTON' | translate}}
+          <img src="./assets/media/authentication/arrow-right.svg" alt="" />
+
+          <ng-container *ngIf="authService.isLoadingSubject | async">
+            <span class="spinner ml-5"></span>
+          </ng-container>
+        </button>
+<!--        <div class="forgot-password">-->
+<!--          <a href="#" class="btn btn-link text-primary">-->
+<!--            {{'AUTH.FORGOT.TITLE' | translate}}-->
+<!--          </a>-->
+<!--        </div>-->
+<!--        <ul class="row justify-content-center">-->
+<!--          <li>-->
+<!--            <span class="btn btn-link">Hướng dẫn sử dụng</span>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <span class="btn btn-link"> Hướng dẫn mở tài khoản </span>-->
+<!--          </li>-->
+<!--        </ul>-->
+      </form>
+    </div>
+  </div>
+</div>
